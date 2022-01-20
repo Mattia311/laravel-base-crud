@@ -1,34 +1,40 @@
 @extends('layouts.app')
 
+
 @section('Content')
-    <h1>Creazione fumetto</h1>
 
-    <form action="{{route('comics.store')}}" method="POST">
-        @csrf
-        <div>
-            <label for="isbn" class="form-label">ISBN</label>
-            <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Inserire l' ISBN">
-        </div>
+<div class="comics_create">
 
-        <div>
-            <label for="title" class="form-label">Titolo</label>
-            <input type="text" name="title" id="title" class="form-control" placeholder="Inserire il titolo">
-        </div>
+    <div class="container">
 
-        <div>
-            <label for="number" class="form-label">Numero fumetto</label>
-            <input type="number" name="number" id="number" class="form-control" placeholder="Inserire il numero del fumetto">
-        </div>
+        <form action="{{route('comics.store')}}" method="post">
+            @csrf
 
-        <div>
-            <label for="publishing" class="form-label">Data pubblicanzione</label>
-            <input type="datetime" class="form-control" id="publishing" name="publishing" placeholder="Inserire la data di pubblicazione">
-        </div>
+            <div class="mb-3">
 
-        <div>
-            <label for="price" class="form-label">Prezzo</label>
-            <input type="number" class="form-control" id="price" name="price" placeholder="Inserire il prezzo">
-        </div>
-        <button type="submit" class="btn btn-primary">Invia</button>
-    </form>
+                <label for="title" class="form-label fw-bold fs-4">TITLE*:</label>
+                <input type="text" name="title" id="title" class="form-control" required placeholder="title here" aria-describedby="helpId">
+                {{-- // TITLE --}}
+
+                <label for="series" class="form-label fw-bold fs-4">SERIES:</label>
+                <input type="text" name="series" id="series" class="form-control" placeholder="series here" aria-describedby="helpId">
+                {{-- // SERIES --}}
+
+                <label for="description" class="form-label fw-bold fs-4">DESCRIPTION:</label>
+                <textarea type="text-area" name="description" id="description" class="form-control" placeholder="description here" aria-describedby="helpId">
+                  </textarea>
+                {{-- // DESCRIPTION --}}
+
+                <label for="price" class="form-label fw-bold fs-4"> PRICE*: </label>
+                <input type="text" name="price" id="price" required class="form-control" placeholder="price here" aria-describedby="helpId">
+                {{-- // PRICE --}}
+
+                <button type="submit" class="btn btn-success fw-bold">Add your comic</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
 @endsection
