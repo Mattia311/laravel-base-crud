@@ -98,7 +98,7 @@ class ComicController extends Controller
         $comic->update($validated_data);
 
 
-        return redirect()->route('comics.index')->with('message', '🥳 Complimenti hai modificato il post');
+        return redirect()->route('comics')->with('message', '🥳 Complimenti hai modificato il post');
     }
 
     /**
