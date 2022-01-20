@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('Content')
-<h1>ciao</h1>
 <div class="heading d-flex justify-content-between">
     <h1>All Posts in a table</h1>
     <a class="btn btn-primary" href="{{route('comics.create')}}" role="button">Create</a>
@@ -20,43 +19,79 @@
         </div>
         @endforeach
     </div>
-    <div class="button">
-        <button>Load More</button>
-    </div>
 </div>
-<div class="menu_dc">
-    <div class="container">
-        <div class="icon">
-            <div class="img">
-                <img src="{{ asset('img/buy-comics-digital-comics.png') }}" alt>
-            </div>
-            <h3>Digital comics</h3>
-        </div>
-        <div class="icon">
-            <div class="img">
-                <img src="{{ asset('img/buy-comics-merchandise.png') }}" alt>
-            </div>
-            <h3>DC merchandise</h3>
-        </div>
-        <div class="icon">
-            <div class="img">
-                <img src="{{ asset('img/buy-comics-subscriptions.png') }}" alt>
-            </div>
-            <h3>Subscription</h3>
-        </div>
-        <div class="icon">
-            <div class="img">
-                <img src="{{ asset('img/buy-comics-shop-locator.png') }}" alt>
-            </div>
-            <h3>Comic shop locator</h3>
-        </div>
-        <div class="icon">
-            <div class="img">
-                <img style="height: 40px" src="{{ asset('img/buy-dc-power-visa.svg') }}" alt>
-            </div>
-            <h3>DC power visa</h3>
-        </div>
-    </div>
+
+@if (session('message'))
+<div class="alert alert-success">
+    {{ session('message') }}
+</div>
+@endif
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Create At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($comics as $comic)
+            <tr>
+                <td scope="row">{{$comic->id}}</td>
+                <td>{{$comic->title}}</td>
+                <td>{{$comic->created_at}}</td>
+                <td>{{$comic->updated_at}}</td>
+                <td>
+                    <a class="btn btn-primary" title="View post" href="{{route('comics.show', $comic->id)}}"><i class="fas fa-eye"></i> </a>
+
+                    <a class="btn btn-secondary" href="{{route('comics.edit', $comic->id)}}"> <i class="fas fa-pencil-alt"></i> </a>
+
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{$comic->id}}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="delete{{$comic->id}}" tabindex="-1" role="dialog" aria-labelledby="modal-{{$comic->id}}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Post {{$comic->title}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        ⚡ Attenzione questa operazione non puo essere annullata!
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <form action="{{route('comics.destroy', $comic->id)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+
+
 </div>
 
 

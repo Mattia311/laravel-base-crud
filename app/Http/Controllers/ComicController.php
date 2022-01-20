@@ -37,15 +37,24 @@ class ComicController extends Controller
     public function store(Request $request)
     {
 
-        $comic = new comic();
+        $validated_data = $request->validate([
+            'title' => 'required|unique:comics',
+            'description' => 'nullable',
+            'series' => 'nullable',
+            'price' => 'nullable',
+        ]);
+
+        Comic::create($validated_data);
+
+
+        /*$comic = new comic();
         $comic->title = $request->title;
         $comic->description = $request->description;
         $comic->series = $request->series;
         $comic->price = $request->price;
-        $comic->save();
+        $comic->save();*/
 
-        // POST / REDIRECT / GET
-        return redirect()->route('comics.index');
+        return redirect()->route('comics');
     }
 
     /**
@@ -79,9 +88,17 @@ class ComicController extends Controller
      */
     public function update(Request $request, Comic $comic)
     {
-        $data = $request->all();
-        $comic->update($data);
-        return redirect()->route("comics.show", $comic->id);
+        $validated_data = $request->validate([
+            'title' => 'required|unique:comics',
+            'description' => 'nullable',
+            'series' => 'nullable',
+            'price' => 'nullable',
+        ]);
+
+        $comic->update($validated_data);
+
+
+        return redirect()->route('comics.index')->with('message', '🥳 Complimenti hai modificato il post');
     }
 
     /**
@@ -93,6 +110,6 @@ class ComicController extends Controller
     public function destroy(Comic $comic)
     {
         $comic->delete();
-        return redirect()->route("comics.index");
+        return redirect()->route("comics")->with('message', '😱 Hai rimosso un post per sempre!! Sei fregato!');;
     }
 }

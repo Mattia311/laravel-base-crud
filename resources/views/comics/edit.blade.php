@@ -1,33 +1,67 @@
 @extends('layouts.app')
 
+
 @section('Content')
-<form action="{{route('comics.update', $comic['id'])}}" method="POST">
-    @csrf
-    @method("PUT")
-    <div>
-        <label for="isbn" class="form-label">ISBN</label>
-        <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Inserire l' ISBN">
-    </div>
 
-    <div>
-        <label for="title" class="form-label">Titolo</label>
-        <input type="text" name="title" id="title" class="form-control" placeholder="Inserire il titolo">
-    </div>
+<div class="container">
+    <h1>Update Post</h1>
 
-    <div>
-        <label for="number" class="form-label">Numero fumetto</label>
-        <input type="number" name="number" id="number" class="form-control" placeholder="Inserire il numero del fumetto">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+    @endif
 
-    <div>
-        <label for="publishing" class="form-label">Data pubblicanzione</label>
-        <input type="datetime" class="form-control" id="publishing" name="publishing" placeholder="Inserire la data di pubblicazione">
-    </div>
+    <form action="{{route('comics.update', $comic->id)}}" method="post">
+        @csrf
+        @method('PUT')
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" placeholder="Type your title here" aria-describedby="titleHelper" value="{{$comic->title}}">
+            <small id="titleHelper" class="text-muted">Type a title for your post. max: 250</small>
+            @error('title')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-    <div>
-        <label for="price" class="form-label">Prezzo</label>
-        <input type="number" class="form-control" id="price" name="price" placeholder="Inserire il prezzo">
-    </div>
-    <button type="submit" class="btn btn-primary">Invia</button>
-</form>
+        <div class="mb-3">
+            <label for="body" class="form-label">description</label>
+            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3">
+            {{$comic->description}}
+            </textarea>
+            @error('description')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="body" class="form-label">SERIES:</label>
+            <textarea class="form-control @error('description') is-invalid @enderror" name="series" id="series" rows="3">
+            {{$comic->serie}}
+            </textarea>
+            @error('series')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+        <div class="mb-3">
+            <label for="body" class="form-label">PRICE:</label>
+            <textarea class="form-control @error('description') is-invalid @enderror" name="price" id="price" rows="3">
+            {{$comic->price}}
+            </textarea>
+            @error('price')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-success">Update</button>
+
+    </form>
+</div>
+
 @endsection
